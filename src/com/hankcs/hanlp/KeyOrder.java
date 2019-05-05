@@ -125,31 +125,34 @@ public class KeyOrder {
      */
     public static boolean KeyOrder(String TecText, String StuText){
         Boolean result= new Boolean("true");
-        CoNLLWord[] TecArray = CoNLLAnswer(TecText);
-        int P=0;
-        for (int i = 0; i<= TecArray.length-1; i++){
-            CoNLLWord Word = TecArray[i];
-            if(Word.DEPREL.equals("前置宾语")){
-                System.out.println("发现前置宾语");
-                if (PassiveSen(TecText,StuText)==true){
+        try {
+            CoNLLWord[] TecArray = CoNLLAnswer(TecText);
+            int P = 0;
+            for (int i = 0; i <= TecArray.length - 1; i++) {
+                CoNLLWord Word = TecArray[i];
+                if (Word.DEPREL.equals("前置宾语")) {
+                    System.out.println("发现前置宾语");
+                    if (PassiveSen(TecText, StuText) == true) {
+                        result = true;
+                    } else {
+                        result = false;
+                    }
+                }
+                if (Word.DEPREL.equals("左附加关系")) {
+                    P++;
+                }
+            }
+            if (P >= 1) {//判断系统中是否有并列关系
+                //System.out.println("发现并列关系：");
+                if (Parallel(TecText, StuText) == true) {
                     result = true;
-                }else {
+                } else {
                     result = false;
                 }
             }
-            if(Word.DEPREL.equals("左附加关系")){
-                P++;
-            }
+        }catch (Exception e){
+            System.out.println("Exception"+e);
         }
-        if(P>=1){//判断系统中是否有并列关系
-            //System.out.println("发现并列关系：");
-            if (Parallel(TecText,StuText)==true){
-                result = true;
-            }else{
-                result = false;
-            }
-        }
-        System.out.println("并列或被动是否一致："+result);
         return result;
     }
 
@@ -162,6 +165,7 @@ public class KeyOrder {
     }
 
 /*
+    voyageryf: 2019年5月5日
     //主程序进行测试
     public static void main(String[] args){
         String TecText="苹果和菠萝一样甜";

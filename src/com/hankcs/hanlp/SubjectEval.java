@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
@@ -14,9 +15,9 @@ import java.util.List;
 public class SubjectEval {
 
     public static JSONObject SubEval(String TecText, String StuText, HashMap<String,Double> map) {
-        JSONObject jsonObject = new JSONObject();
+        JSONObject jsonObject = new JSONObject(new LinkedHashMap());
         try {
-            JSONObject data = new JSONObject();
+            JSONObject data = new JSONObject(new LinkedHashMap());
             YKTKeyword YKT = new YKTKeyword(StuText);
             List<String> hitKeyword=new ArrayList<String>();
             double grade = YKT.yktCorrectRate(map,hitKeyword);
@@ -24,21 +25,30 @@ public class SubjectEval {
             data.put("hitKeyword",hitKeyword);//学生命中关键词
 
             //结合分数中整合关键词词性正确率
-            double key= KeyWordRate.KeyWord(TecText,StuText,map);
-            grade=grade*(0.9+0.1 * key);
+            double KeyResult= KeyWordRate.KeyWord(TecText,StuText,map);
+            grade=grade*(0.9+0.1 * KeyResult);
+            data.put("关键词正确率",KeyResult);
 
             //判断词性
-            if(WordProperty.Property(StuText)>=0.8){
+            double WordResult= WordProperty.Property(StuText);
+            if(WordResult>=0.8){
                 grade=grade*0.9;
             }
+            data.put("词性重复频率", WordResult);
+
             //判断主谓
-            if(SenCPST.Cpst(TecText,StuText)==false){
+            boolean SenResult= SenCPST.Cpst(TecText,StuText);
+            if(SenResult==false){
                 grade=grade*0.9;
             }
+            data.put("主谓关系",SenResult);
+
             //判断句子中被动与并列是否正确！
-            if(KeyOrder.KeyOrder(TecText,StuText)==false){
+            boolean OrderResult= KeyOrder.KeyOrder(TecText,StuText);
+            if(OrderResult==false){
                 grade=grade*0.9;
             }
+            data.put("并列被动关系",OrderResult);
 
             DecimalFormat Newdf = new DecimalFormat("0.##");
             data.put("score",Newdf.format(grade));//最终成绩

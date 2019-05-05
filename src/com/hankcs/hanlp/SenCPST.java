@@ -11,11 +11,15 @@ import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLWord;
 public class SenCPST {
     //此函数的启动类，包含对主谓关系的判断，后期可根据需要进行扩展
     public static boolean Cpst (String TecText,String StuText) {
-        boolean result;
-        if (Sub_Pre(TecText,StuText)==true){
-            result=true;
-        }else{
-            result=false;
+        Boolean result= new Boolean("true");
+        try {
+            if (Sub_Pre(TecText, StuText) == true) {
+                result = true;
+            } else {
+                result = false;
+            }
+        }catch (Exception e){
+            System.out.println("Exception"+e);
         }
         return result;
     }
@@ -50,7 +54,6 @@ public class SenCPST {
         }else{
             result = false;//当前主谓关系不一致
         }
-        System.out.println("当前主谓关系是否一致："+result);
         return result;
     }
 }

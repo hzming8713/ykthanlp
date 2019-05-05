@@ -1,5 +1,6 @@
 package com.hankcs.hanlp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLSentence;
 import com.hankcs.hanlp.corpus.dependency.CoNll.CoNLLWord;
 import java.text.DecimalFormat;
@@ -53,54 +54,53 @@ public class KeyWordRate {
     }
     //判断当前所获取的关键词词性是否一致，直接读取map即可
     public static double KeyWord(String TecText, String StuText, HashMap<String,Double>map){
-        List<String> TecKeyList = KeyList(TecText,map);//获取当前关键词，并完成对CoNLL结果的重写
-        //System.out.println("教师中所有关键词为："+TecKeyList);
-        List<String> StuStrDEP = new ArrayList<String>();
-        List<String> TecStrDEP = new ArrayList<String>();
-        CoNLLWord[] StuArray = KeyOrder.CoNLLAnswer(StuText);
-        //输出学生答案CoNLL格式
-/*        for (int i=0;i<=StuArray.length-1; i++){
+        Double EndRate=new Double("0.00");
+        try {
+            List<String> TecKeyList = KeyList(TecText, map);//获取当前关键词，并完成对CoNLL结果的重写
+            //System.out.println("教师中所有关键词为："+TecKeyList);
+            List<String> StuStrDEP = new ArrayList<String>();
+            List<String> TecStrDEP = new ArrayList<String>();
+            CoNLLWord[] StuArray = KeyOrder.CoNLLAnswer(StuText);
+            //输出学生答案CoNLL格式
+/* voyageryf: 2019年5月5日
+       for (int i=0;i<=StuArray.length-1; i++){
             CoNLLWord StuWord=StuArray[i];
             System.out.println(StuWord);
         }*/
-        CoNLLWord[] TecArray = KeyOrder.CoNLLAnswer(TecText);
-        //输出教师答案CoNLL格式
-/*        for (int i=0;i<=TecArray.length-1; i++){
-            CoNLLWord TecWord=TecArray[i];
-            System.out.println(TecWord);
-        }*/
-        for (int i=0; i<=TecKeyList.size()-1; i++){
-            String NewStr = TecKeyList.get(i);//获取学生列表中关键词
-            //System.out.println(NewStr);
-            for (int j=0; j<=StuArray.length-1; j++){
-                if(NewStr.equals(StuArray[j].LEMMA)){
-                    StuStrDEP.add(StuArray[j].DEPREL);
-                }
-            }
-            for (int k=0; k<=TecArray.length-1; k++){
-                if(NewStr.equals(TecArray[k].LEMMA)){
-                    TecStrDEP.add(TecArray[k].DEPREL);
-                }
-            }
-        }
-//        System.out.println(StuStrDEP);
-//        System.out.println(TecStrDEP);
-        double same=0;
-        for (int i=0; i<=StuStrDEP.size()-1; i++){
-            for(int j=0; j<=TecStrDEP.size()-1; j++){
-                if(StuStrDEP.get(i).equals(TecStrDEP.get(j))){
-                    same++;
-                }
-            }
-        }
+            CoNLLWord[] TecArray = KeyOrder.CoNLLAnswer(TecText);
 
-        if(same>StuStrDEP.size()){//删除句子中包含的重复词语！
-            same=StuStrDEP.size();
-        }
+            for (int i = 0; i <= TecKeyList.size() - 1; i++) {
+                String NewStr = TecKeyList.get(i);//获取学生列表中关键词
+                //System.out.println(NewStr);
+                for (int j = 0; j <= StuArray.length - 1; j++) {
+                    if (NewStr.equals(StuArray[j].LEMMA)) {
+                        StuStrDEP.add(StuArray[j].DEPREL);
+                    }
+                }
+                for (int k = 0; k <= TecArray.length - 1; k++) {
+                    if (NewStr.equals(TecArray[k].LEMMA)) {
+                        TecStrDEP.add(TecArray[k].DEPREL);
+                    }
+                }
+            }
+            double same = 0;
+            for (int i = 0; i <= StuStrDEP.size() - 1; i++) {
+                for (int j = 0; j <= TecStrDEP.size() - 1; j++) {
+                    if (StuStrDEP.get(i).equals(TecStrDEP.get(j))) {
+                        same++;
+                    }
+                }
+            }
 
-        double EndRate = same/StuStrDEP.size();
-        DecimalFormat df = new DecimalFormat("0.##");
-        System.out.println("当前关键词词性正确率:" + df.format(EndRate));
+            if (same > StuStrDEP.size()) {//删除句子中包含的重复词语！
+                same = StuStrDEP.size();
+            }
+
+            EndRate = same / StuStrDEP.size();
+            DecimalFormat df = new DecimalFormat("0.##");
+        }catch (Exception e){
+            System.out.println("Exception:"+e);
+        }
         return EndRate;
     }
 
@@ -122,6 +122,7 @@ public class KeyWordRate {
     }
 
 /*
+    voyageryf: 2019年5月5日
     //主程序进行测试
     public static void main(String[] args){
         String TecText= "上层建筑是社会意识形态和政治法律制度，包含了阶级关系和维持这种关系的国家机器和社会意识形态，及其政治法律制度，组织等";
