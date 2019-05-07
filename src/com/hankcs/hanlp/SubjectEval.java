@@ -65,5 +65,19 @@ public class SubjectEval {
             return jsonObject;
         }
     }
+    //函数重载，考虑教师输入文本为空时的情况
+    public static JSONObject SubEval(String StuText, HashMap<String,Double> map){
+        JSONObject jsonObject= new JSONObject(new LinkedHashMap());
+        try{
+            YKTKeyword YKT = new YKTKeyword(StuText);
+            List<String> hitKeyword=new ArrayList<String>();
+            double grade = YKT.yktCorrectRate(map,hitKeyword);
+            jsonObject.put("grade:",grade);//初始成绩
+            jsonObject.put("hitKeyword",hitKeyword);//学生命中关键词
+        }catch (Exception e){
+            System.out.println("Exception"+e);
+        }
+        return jsonObject;
+    }
 }
 

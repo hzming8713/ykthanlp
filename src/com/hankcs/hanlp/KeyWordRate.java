@@ -62,8 +62,7 @@ public class KeyWordRate {
             List<String> TecStrDEP = new ArrayList<String>();
             CoNLLWord[] StuArray = KeyOrder.CoNLLAnswer(StuText);
             //输出学生答案CoNLL格式
-/* voyageryf: 2019年5月5日
-       for (int i=0;i<=StuArray.length-1; i++){
+/*       for (int i=0;i<=StuArray.length-1; i++){
             CoNLLWord StuWord=StuArray[i];
             System.out.println(StuWord);
         }*/
@@ -121,10 +120,8 @@ public class KeyWordRate {
         return hitKeyword;
     }
 
-/*
-    voyageryf: 2019年5月5日
     //主程序进行测试
-    public static void main(String[] args){
+/*    public static void main(String[] args){
         String TecText= "上层建筑是社会意识形态和政治法律制度，包含了阶级关系和维持这种关系的国家机器和社会意识形态，及其政治法律制度，组织等";
         String StuText= "上层建筑是社会意识形态和政治法律制度";
 
@@ -138,6 +135,5 @@ public class KeyWordRate {
         List<String> hitKeyword=new ArrayList<String>();
         double grade = YKT.yktCorrectRate(map,hitKeyword);
         KeyWord(TecText,StuText,map);
-    }
-    */
+    }*/
 }

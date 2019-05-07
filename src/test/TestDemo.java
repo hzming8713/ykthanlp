@@ -20,7 +20,8 @@ public class TestDemo {
         map.put("阶级关系", 0.15);
         map.put("上层建筑", 0.1);
         /*模拟调用*/
-        JSONObject jsonObject = SubjectEval.SubEval(TecText,StuText,map);
+        //JSONObject jsonObject = SubjectEval.SubEval(TecText,StuText,map);
+        JSONObject jsonObject = SubjectEval.SubEval(StuText,map);
 //        ========= End ========
         System.err.println(jsonObject.toString());
     }
