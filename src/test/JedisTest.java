@@ -18,13 +18,8 @@ public class JedisTest {
                 /*参数处理*/
                 String StuText = requestJson.getString("text");//学生答案
                 Map<String,Double> map = (Map)JSONObject.parseObject(requestJson.getString("keywordmap"));
-                /*算法调用*/
-
-                /*
-                 *  hzming: 将SubjectEval.SubEval(null,StuText,(HashMap<String, Double>) map);函数实现，兼容以前版本自动评分
-                 */
+                /*TODO 算法调用*/
                 JSONObject jsonObject = SubjectEval.SubEval(null,StuText,(HashMap<String, Double>) map);
-
                 jsonObject.put("taskId",requestJson.getString("taskId"));
                 return jsonObject;
             }

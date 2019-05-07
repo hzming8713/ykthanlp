@@ -20,7 +20,7 @@ public class SubscribeService {
                     @Override
                     public void onMessage(String requestsChannel, String result) {
                         synchronized (this){
-                            JSONObject jo = new JSONObject();
+
                             try {
                                 JSONObject requestJson = JSONObject.parseObject(result);
                                 String taskId = requestJson.getString("taskId");
@@ -28,13 +28,12 @@ public class SubscribeService {
                                     System.out.println(result);
                                 } else {
                                     System.err.println(String.format("<INFO-50001> onMessage: %s result:%s", requestsChannel, result));
-                                    jo.put("message",rpcCallback.handle(requestJson));//处理任务  调度算法
-                                    jo.put("status",true);
                                     Jedis responseJedis = RedisConfig.getPublisher();
-                                    responseJedis.publish(responseChannel,jo.toString());
+                                    responseJedis.publish(responseChannel,rpcCallback.handle(requestJson).toString());
                                     responseJedis.close();
                                 }
                             } catch (Exception e) {
+                                JSONObject jo = new JSONObject();
                                 jo.put("status",false);
                                 jo.put("message",String.format("<ERROR-50002> jedis value 非 json 格式 result:%s", result));
                                 Jedis responseJedis = RedisConfig.getPublisher();
@@ -78,11 +77,11 @@ public class SubscribeService {
                             jo.put("ping",requestsChannel);
                         responseJedis.publish(requestsChannel,jo.toString());
                         responseJedis.close();
-                        Thread.sleep(120000);//向responseChannel发送心跳数据
+                        Thread.sleep(120000);//向requestsChannel发送心跳数据
                     }
                 }catch (Exception e){
                     e.printStackTrace();
-                    logger.error(String.format("<ERROR> responseChannel ping"));
+                    logger.error(String.format("<ERROR> requestsChannel ping"));
                 }
             }
         }).start();
