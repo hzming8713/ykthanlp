@@ -8,7 +8,7 @@
     <name>HanLP</name>
     <url>http://www.hankcs.com/</url>
 
-    <!--hzming: 2019年4月29日
+    <!--   hzming: 2019年4月29日
     <description>
         汉语言处理包
     </description>
@@ -29,8 +29,8 @@
             <email>me@hankcs.com</email>
             <url>http://www.hankcs.com</url>
         </developer>
-    </developers>-->
-   <!--hzming: 2019年4月29日
+    </developers>
+
     <build>
         <plugins>
             &lt;!&ndash; 编译插件, 设定JDK版本 &ndash;&gt;
@@ -100,30 +100,56 @@
                 </configuration>
             </plugin>
         </plugins>
-    </build>-->
+    </build>
+
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <!--<maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.0</maven-compiler-plugin.version>
         <maven-jar-plugin.version>2.4</maven-jar-plugin.version>
         <maven-resources-plugin.version>2.7</maven-resources-plugin.version>
-        <maven-source-plugin.version>2.4</maven-source-plugin.version>-->
+        <maven-source-plugin.version>2.4</maven-source-plugin.version>
 
     </properties>
+    -->
     <dependencies>
-        <dependency>
+        <!--<dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.57</version>
         </dependency>
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-nop</artifactId>
+            <version>1.7.26</version>
+            <scope>test</scope>
+        </dependency>
 
     </dependencies>
+    <build>
+        <plugins>
+            <!-- 指定jdk 版本-->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
 

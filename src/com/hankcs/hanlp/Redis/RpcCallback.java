@@ -1,5 +1,7 @@
-package com.ahaxt.ykt.common.rpc;
+package com.hankcs.hanlp.Redis;
+
+import com.alibaba.fastjson.JSONObject;
 
 public interface RpcCallback {
-    public void handle(String result);
+    JSONObject handle(JSONObject requestJson);
 }
