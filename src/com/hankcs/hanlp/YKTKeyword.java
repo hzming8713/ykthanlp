@@ -58,11 +58,9 @@ public class YKTKeyword
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
 		CoreStopWordDictionary.apply(termList);
 		
 		keyWordExtract();
-		
 		double rate = similar(strList,standardText,hitKeyword);
 //		System.out.print("hitKeyword:");
 //		System.out.println(hitKeyword);

@@ -3,6 +3,7 @@ package redis;
 import com.alibaba.fastjson.JSONObject;
 import com.hankcs.hanlp.SubjectEval;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Main {
@@ -11,21 +12,22 @@ public class Main {
             new SubscribeService().subscribe(RedisConfig.requestChannel_questionhanlp,RedisConfig.responseChannel_questionhanlp,new RpcCallback(){
                 @Override
                 public JSONObject handle(JSONObject requestJson) {
-                    JSONObject jsonObject = new JSONObject();
+                    JSONObject reponseJson = new JSONObject();
                     try{
-                        jsonObject.put("taskId",requestJson.getString("taskId"));
                         System.out.println("requestJson = [" + requestJson + "]");
-                        jsonObject = SubjectEval.SubEval(
-                            requestJson.getString("tecText"),
-                            requestJson.getString("stutext"),
-                            (Map)JSONObject.parseObject(requestJson.getString("keywordmap"))
-                        );
+                        Map<String, Object> map = JSONObject.parseObject(requestJson.getString("map"));
+                        HashMap<String,Double> mapcopy = new HashMap<>();
+                        for (Map.Entry<String, Object> entry : map.entrySet()) {
+                            mapcopy.put(entry.getKey(),Double.valueOf(entry.getValue().toString()));
+                        }
+                        reponseJson = SubjectEval.SubEval(requestJson.getString("tecText"), requestJson.getString("stuText"),mapcopy);
+                        reponseJson.put("taskId",requestJson.getString("taskId"));
                     }catch (Exception e){
-                        jsonObject.put("status",false);
-                        jsonObject.put("code","-1");
-                        jsonObject.put("message","未知异常");
+                        reponseJson.put("status",false);
+                        reponseJson.put("code","-1");
+                        reponseJson.put("message","未知异常");
                     }finally {
-                        return jsonObject;
+                        return reponseJson;
                     }
                 }
             });

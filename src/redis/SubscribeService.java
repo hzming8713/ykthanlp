@@ -15,24 +15,25 @@ public class SubscribeService {
                 Jedis jedis = RedisConfig.getSubscriber();
                 jedis.subscribe(new JedisPubSub() {
                     @Override
-                    public void onMessage(String requestsChannel, String result) {
+                    public void onMessage(String requestsChannel, String requestString) {
                         synchronized (this){
-
                             try {
-                                JSONObject requestJson = JSONObject.parseObject(result);
+                                JSONObject requestJson = JSONObject.parseObject(requestString);
                                 String taskId = requestJson.getString("taskId");
                                 if ("ping".equals(taskId)) {
-                                    System.out.println(result);
+                                    System.out.println(requestString);
                                 } else {
-                                    System.err.println(String.format("<INFO-50001> onMessage: %s result:%s", requestsChannel, result));
+                                    System.err.println(String.format("<INFO-50001> onMessage: %s requestString:%s", requestsChannel, requestString));
                                     Jedis responseJedis = RedisConfig.getPublisher();
                                     responseJedis.publish(responseChannel,rpcCallback.handle(requestJson).toString());
                                     responseJedis.close();
                                 }
                             } catch (Exception e) {
+                                requestString = String.format("<ERROR-50002> jedis value 非 json 格式 requestString:【%s】", requestString);
+                                System.err.println(requestString);
                                 JSONObject jo = new JSONObject();
                                 jo.put("status",false);
-                                jo.put("message",String.format("<ERROR-50002> jedis value 非 json 格式 result:%s", result));
+                                jo.put("message",requestString);
                                 Jedis responseJedis = RedisConfig.getPublisher();
                                 responseJedis.publish(responseChannel,jo.toString());
                                 responseJedis.close();
@@ -68,13 +69,13 @@ public class SubscribeService {
             public void run() {
                 try {
                     while (true){
-                        Jedis responseJedis = RedisConfig.getPublisher();
-                        JSONObject jo = new JSONObject();
-                        jo.put("taskId","ping");
-                        jo.put("ping",requestChannel);
-                        responseJedis.publish(requestChannel,jo.toString());
-                        responseJedis.close();
                         Thread.sleep(120000);//向requestsChannel发送心跳数据
+                        Jedis responseJedis = RedisConfig.getPublisher();
+                        JSONObject jsonObject = new JSONObject();
+                        jsonObject.put("taskId","ping");
+                        jsonObject.put("ping",requestChannel);
+                        responseJedis.publish(requestChannel,jsonObject.toString());
+                        responseJedis.close();
                     }
                 }catch (Exception e){
                     e.printStackTrace();
