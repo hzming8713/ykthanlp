@@ -1,3 +1,4 @@
+package test;
 import com.alibaba.fastjson.JSONObject;
 import com.hankcs.hanlp.SubjectEval;
 
@@ -20,24 +21,9 @@ public class TestDemo {
         map.put("阶级关系", 0.15);
         map.put("上层建筑", 0.1);
         /*模拟调用*/
-        //JSONObject jsonObject = SubjectEval.SubEval(TecText,StuText,map);
-        JSONObject jsonObject = SubjectEval.SubEval(StuText,map);
+        JSONObject jsonObject = SubjectEval.SubEval(null,StuText,map);
 //        ========= End ========
         System.err.println(jsonObject.toString());
     }
-    public static  void testDemo2(){
-        /*模拟参数*/
-        String TecText="上层建筑是社会意识形态和政治法律制度，包含了阶级关系和维持这种关系的国家机器和社会意识形态，及其政治法律制度，组织等";
-        String StuText="上层建筑是社会意识形态和政治法律制度";
-        HashMap<String,Double> map = new HashMap<String,Double>();
-        map.put("社会意识形态",0.25);
-        map.put("国家机器",0.25);
-        map.put("政治法律制度",0.25);
-        map.put("阶级关系", 0.15);
-        map.put("上层建筑", 0.1);
-        /*模拟调用*/
-        JSONObject jsonObject = SubjectEval.SubEval(null,StuText,map);//TODO 兼容试题无标答情况，依据学生答案与关键词进行评分
-//        ========= End ========
-        System.err.println(jsonObject.toString());
-    }
+
 }

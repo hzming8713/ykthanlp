@@ -14,8 +14,13 @@ public class KeyOrder {
 
     //获取当前教师与学生的CoNLLSentence输出结果
     public static CoNLLWord[] CoNLLAnswer(String Text){
-        CoNLLSentence Answer= HanLP.parseDependency(Text);
-        CoNLLWord[] Array = Answer.getWordArray();
+        CoNLLWord[] Array= new CoNLLWord[20];
+        try{
+            CoNLLSentence Answer= HanLP.parseDependency(Text);
+            Array = Answer.getWordArray();
+        }catch (IndexOutOfBoundsException e){
+            e.printStackTrace();
+        }
         return Array;
     }
 
@@ -150,8 +155,8 @@ public class KeyOrder {
                     result = false;
                 }
             }
-        }catch (Exception e){
-            System.out.println("Exception"+e);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Exception Thrown"+e);
         }
         return result;
     }
@@ -164,15 +169,12 @@ public class KeyOrder {
         System.out.println(StuAnswer);
     }
 
-/*
-    voyageryf: 2019年5月5日
     //主程序进行测试
+/*
     public static void main(String[] args){
         String TecText="苹果和菠萝一样甜";
         String StuText="香蕉和西瓜一样甜";
         //Test(TecText,StuText);
         KeyOrder(TecText,StuText);
-    }
-*/
-
+    }*/
 }

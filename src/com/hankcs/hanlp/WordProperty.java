@@ -46,18 +46,17 @@ public class WordProperty {
             }
             result = val / StuArray.length;
             DecimalFormat df = new DecimalFormat("0.##");
-        }catch (Exception e){
-            System.out.println("Exception:"+e);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Exception Thrown"+e);
         }
         return result;
     }
 
-/* voyageryf: 2019年5月5日
     //主程序进行测试
+/*
     public static void main(String[] args){
         String StuText="上层建筑是社会意识形态和政治法律制度";
         Property(StuText);
-    }
-    */
+    }*/
 }
 

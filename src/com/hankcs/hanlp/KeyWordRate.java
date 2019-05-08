@@ -97,8 +97,8 @@ public class KeyWordRate {
 
             EndRate = same / StuStrDEP.size();
             DecimalFormat df = new DecimalFormat("0.##");
-        }catch (Exception e){
-            System.out.println("Exception:"+e);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Exception Thrown"+e);
         }
         return EndRate;
     }
@@ -121,7 +121,8 @@ public class KeyWordRate {
     }
 
     //主程序进行测试
-/*    public static void main(String[] args){
+/*
+    public static void main(String[] args){
         String TecText= "上层建筑是社会意识形态和政治法律制度，包含了阶级关系和维持这种关系的国家机器和社会意识形态，及其政治法律制度，组织等";
         String StuText= "上层建筑是社会意识形态和政治法律制度";
 

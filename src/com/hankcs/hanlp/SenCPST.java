@@ -18,8 +18,8 @@ public class SenCPST {
             } else {
                 result = false;
             }
-        }catch (Exception e){
-            System.out.println("Exception"+e);
+        }catch (IndexOutOfBoundsException e){
+            System.out.println("Exception Thrown"+e);
         }
         return result;
     }
