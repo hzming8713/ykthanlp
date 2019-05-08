@@ -41,7 +41,6 @@ public class YKTKeyword
 //		try {
 //			segmentText("CRF");
 //		} catch (IOException e) {
-//			// TODO Auto-generated catch block
 //			e.printStackTrace();
 //		}
 	}
@@ -57,7 +56,6 @@ public class YKTKeyword
 		try {
 			segmentText("CRF");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
