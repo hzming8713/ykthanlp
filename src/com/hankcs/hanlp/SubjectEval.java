@@ -13,22 +13,27 @@ public class SubjectEval {
 
     public static JSONObject SubEval(String TecText, String StuText, Map<String,Double> map) {
         JSONObject jsonObject = new JSONObject(new LinkedHashMap());
-        jsonObject.put("code",200);
-        jsonObject.put("message","ok");
+        if(map==null||map.size()<1){
+            System.err.println("Please confirm the keywords and try again！");
+            jsonObject.put("code",-1);
+            jsonObject.put("message",String.format("<ERROR> demo出了map为null的错误"));
+        }else {
+            jsonObject.put("code",200);
+            jsonObject.put("message","ok");
         //当前执行加入判断，当教师输入为空时，则仅输出grade与hitkeyword
         try {
             JSONObject data = new JSONObject(new LinkedHashMap());
             YKTKeyword YKT = new YKTKeyword(StuText);
-            List<String> hitKeyword=new ArrayList<String>();
-            double grade = YKT.yktCorrectRate((HashMap<String, Double>) map,hitKeyword);
-            if (TecText==null){
-                data.put("grade:",grade);//初始成绩
-                data.put("hitKeyword",hitKeyword);//学生命中关键词
-            }else {
+            List<String> hitKeyword = new ArrayList<String>();
+            double grade = YKT.yktCorrectRate((HashMap<String, Double>) map, hitKeyword);
+            if (TecText == null) {
+                data.put("grade:", grade);//初始成绩
+                data.put("hitKeyword", hitKeyword);//学生命中关键词
+            } else {
                 data.put("grade:", grade);//初始成绩
                 data.put("hitKeyword", hitKeyword);//学生命中关键词
                 //结合分数中整合关键词词性正确率
-                double KeyResult = KeyWordRate.KeyWord(TecText, StuText, (HashMap<String, Double>)map);
+                double KeyResult = KeyWordRate.KeyWord(TecText, StuText, (HashMap<String, Double>) map);
                 grade = grade * (0.9 + 0.1 * KeyResult);
                 data.put("keyResult", KeyResult);  //关键词正确率
 
@@ -56,13 +61,13 @@ public class SubjectEval {
                 DecimalFormat Newdf = new DecimalFormat("0.##");
                 data.put("score", Newdf.format(grade));//最终成绩
             }
-            jsonObject.put("data",data);
+            jsonObject.put("data", data);
         }catch (Exception e){
             jsonObject.put("code",-1);
             jsonObject.put("message",String.format("<ERROR> demo出了 xxx 错误"));
-        }finally {
-            return jsonObject;
         }
+        }
+        return jsonObject;
     }
 /*
 2019年5月8日：汪宇飞注释，函数重载已弃用！

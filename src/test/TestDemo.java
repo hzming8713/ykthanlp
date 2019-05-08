@@ -1,6 +1,6 @@
+package test;
 import com.alibaba.fastjson.JSONObject;
 import com.hankcs.hanlp.SubjectEval;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -16,7 +16,6 @@ public class TestDemo {
         map.put("阶级关系", 0.15);
         map.put("上层建筑", 0.1);
     }
-
     public static void main(String[] args){
         //情景 1
         System.err.println("SubEvalTest(stuText,map):\n" + SubEvalTest(null,stuText,map) + "\n");
