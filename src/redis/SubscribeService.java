@@ -23,7 +23,7 @@ public class SubscribeService {
                                 if ("ping".equals(taskId)) {
                                     System.out.println(requestString);
                                 } else {
-                                    System.err.println(String.format("<INFO-50001> onMessage: %s requestString:%s", requestsChannel, requestString));
+//                                    System.err.println(String.format("<INFO> onMessage: %s requestString: %s", requestsChannel, requestString));
                                     Jedis responseJedis = RedisConfig.getPublisher();
                                     responseJedis.publish(responseChannel,rpcCallback.handle(requestJson).toString());
                                     responseJedis.close();
@@ -69,7 +69,7 @@ public class SubscribeService {
             public void run() {
                 try {
                     while (true){
-                        Thread.sleep(120000);//向requestsChannel发送心跳数据
+                        Thread.sleep(600000);//向requestsChannel发送心跳数据
                         Jedis responseJedis = RedisConfig.getPublisher();
                         JSONObject jsonObject = new JSONObject();
                         jsonObject.put("taskId","ping");
