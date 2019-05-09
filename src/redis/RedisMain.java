@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Main {
+public class RedisMain {
     static long num =0;
     public static void main(String[] args) {
         try {
@@ -19,6 +19,7 @@ public class Main {
                     SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd hh:mm:ss:SS");
                     try{
                         System.out.println("\n"+sdf.format(new Date())+" <INFO-请求>("+ num +")：" + requestJson );
+                        //map
                         Map<String, Object> map = JSONObject.parseObject(requestJson.getString("map"));
                         HashMap<String,Double> mapcopy = new HashMap<>();
                         for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -32,7 +33,6 @@ public class Main {
                         responseJson.put("message","未知异常");
                     }finally {
                         System.out.println(sdf.format(new Date())+" <INFO-回执>("+ num++ +")："+responseJson.toString());
-                        responseJson.put("data","{\"grade:\":0.4,\"hitKeyword\":[\"洪\",\"张\"]}");//todo 测试一会删掉
                         return responseJson;
                     }
                 }
