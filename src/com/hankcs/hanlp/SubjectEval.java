@@ -28,7 +28,7 @@ public class SubjectEval {
                 List<String> hitKeyword = new ArrayList<String>();
                 double grade = YKT.yktCorrectRate(map, hitKeyword);
                 if (TecText == null) {
-                    data.put("grade:", grade);//初始成绩
+                    data.put("grade", grade);//初始成绩
                     data.put("hitKeyword", hitKeyword);//学生命中关键词
                 } else {
                     data.put("grade:", grade);//初始成绩
