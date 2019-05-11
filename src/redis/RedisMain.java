@@ -1,6 +1,5 @@
 package redis;
 
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.hankcs.hanlp.SubjectEval;
 
@@ -9,17 +8,19 @@ import java.util.*;
 
 public class RedisMain {
     static long num =0;
+    static String loggerFlag;
     static SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd hh:mm:ss:SS");
     public static void main(String[] args) {
         try {
             new SubscribeService().subscribe(RedisConfig.requestChannel_questionhanlp,RedisConfig.responseChannel_questionhanlp,new RpcCallback(){
                 @Override
                 public JSONObject handle(JSONObject requestJson) {
+                    loggerFlag = String.format("%d:%s",++num,requestJson.getString("taskId"));
                     JSONObject responseJson = new JSONObject();
                     try {
-                        System.out.println("\n"+sdf.format(new Date())+" <INFO-请求("+num+")>requestJson:"+requestJson);
+                        System.out.println("\n"+sdf.format(new Date())+" <INFO-请求("+ loggerFlag +")>requestJson:"+requestJson);
                         int type = requestJson.getInteger("type");
-                        if(type == 1 ){////情景1 单人自动评分
+                        if(type == 1 ){//情景1 单人自动评分
                             Map<String, Object> map = requestJson.getJSONObject("map");
                             HashMap<String,Double> mapcopy = new HashMap<>();
                             for (Map.Entry<String, Object> entry : map.entrySet()) {
@@ -47,9 +48,9 @@ public class RedisMain {
                             responseJson.put("data",data2);
                         }
                     }catch (Exception e){
-                        System.err.println("error("+num+")");
+                        System.err.println("error("+ loggerFlag +")");
                     }finally {
-                        System.out.println("\n"+sdf.format(new Date())+" <INFO-回执("+num+")>responseJson:"+responseJson);
+                        System.out.println("\n"+sdf.format(new Date())+" <INFO-回执("+ loggerFlag +")>responseJson:"+responseJson);
                         return responseJson;
                     }
                 }
