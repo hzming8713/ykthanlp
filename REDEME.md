@@ -11,4 +11,7 @@
     2.无用代码请注释掉并写清代码说明及注释日期，若1年内未启用，删除该段代码（pom.xml中部分未使用代码我已注释）
     3.算法主入口清晰，调试请建立测试类
     4.//TODO 标签事件请写清todo注释，并在规定时限内自行处理
-
+### deploy
+    mvn package jar同级 放置data
+        封装成service启动 ( 临时方案：nohup java -jar ykthanlp-1.2.jar >hanlp.log 2>&1 & )
+    

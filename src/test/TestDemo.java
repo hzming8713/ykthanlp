@@ -1,5 +1,5 @@
 import com.alibaba.fastjson.JSONObject;
-import com.hankcs.hanlp.SubjectEval;
+import com.ahaxt.hanlp.SubjectEval;
 
 import java.util.HashMap;
 
