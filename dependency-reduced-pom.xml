@@ -4,7 +4,7 @@
   <groupId>com.ahaxt</groupId>
   <artifactId>hanlp</artifactId>
   <name>hanlp</name>
-  <version>1.2</version>
+  <version>RELEASE-1.2</version>
   <url>http://test.ahaxt.com</url>
   <build>
     <sourceDirectory>src/main/java</sourceDirectory>

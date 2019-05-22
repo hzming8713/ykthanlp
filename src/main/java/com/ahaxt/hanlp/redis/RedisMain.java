@@ -47,7 +47,7 @@ public class RedisMain {
                                 data2.add(json);
                             }
                             responseJson.put("code",200);
-                            responseJson.put("messate","ok");
+                            responseJson.put("message","ok");
                             responseJson.put("taskId",requestJson.getString("taskId"));
                             responseJson.put("data",data2);
                         }
