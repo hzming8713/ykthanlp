@@ -13,5 +13,5 @@
     4.//TODO 标签事件请写清todo注释，并在规定时限内自行处理
 ### deploy
     mvn package jar同级 放置data
-        封装成service启动(集成slf4j) ( 临时方案：nohup java -jar ykthanlp-1.2.jar)
+        封装成service启动(集成slf4j) ( 临时方案：nohup java -jar ykthanlp-RELEASE-1.2.jar >ykt.out 2>&1 &)
     

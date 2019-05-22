@@ -3,9 +3,9 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ahaxt</groupId>
-    <artifactId>hanlp</artifactId>
+    <artifactId>ykthanlp</artifactId>
+    <name>ykthanlp</name>
     <version>RELEASE-1.2</version>
-    <name>hanlp</name>
     <url>http://test.ahaxt.com</url>
 
     <!--hzming:2019年5月11日10:37:43
