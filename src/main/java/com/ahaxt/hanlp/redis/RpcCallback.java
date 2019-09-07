@@ -1,7 +1,8 @@
 package com.ahaxt.hanlp.redis;
 
-import com.alibaba.fastjson.JSONObject;
-
+/**
+ * @author hongzhangming
+ */
 public interface RpcCallback {
-    JSONObject handle(JSONObject requestJson);
+    void handle(String jsonString);
 }

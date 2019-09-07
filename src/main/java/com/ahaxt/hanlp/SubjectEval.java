@@ -11,8 +11,15 @@ import java.util.*;
 
 public class SubjectEval {
 
+    /**
+     *
+     * @param TecText：教师解析
+     * @param StuText：学生答案
+     * @param map：关键词与比重（0.35）
+     * @return
+     */
     public static JSONObject SubEval(String TecText, String StuText, HashMap<String,Double> map) {
-        JSONObject jsonObject = new JSONObject(new LinkedHashMap());
+        JSONObject jsonObject = new JSONObject();
         if(map==null||map.size()<1){
             System.err.println("Please confirm the keywords and try again！");
             jsonObject.put("code",-1);
@@ -22,7 +29,7 @@ public class SubjectEval {
             jsonObject.put("message", "ok");
             //当前执行加入判断，当教师输入为空时，则仅输出grade与hitkeyword
             try {
-                JSONObject data = new JSONObject(new LinkedHashMap());
+                JSONObject data = new JSONObject();
                 YKTKeyword YKT = new YKTKeyword(StuText);
                 List<String> hitKeyword = new ArrayList<String>();
                 double grade = YKT.yktCorrectRate(map, hitKeyword);

@@ -84,10 +84,9 @@ public class YKTKeyword
     	double grade = 0;
     	for(String str : strL){
     		for( String key : map.keySet()){
-    			
     			if(CoreSynonymDictionary.similarity(str,key)>0.99999 || str.equals(key)){
     				double tmp = CoreSynonymDictionary.similarity(str,key);
-    				if(str.equals(key)){
+    				if(str.equals(key)) {
     					tmp = 1.0;
     				}
 //    				System.out.println(str+"\t"+key+"\t"+tmp+"\t"+map.get(key));

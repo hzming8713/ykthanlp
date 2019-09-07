@@ -4,41 +4,31 @@ import com.alibaba.fastjson.JSONObject;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;
 
-public class SubscribeService {
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+/**
+ * @author hongzhangming
+ */
+public class SubscribeService extends RedisConfig{
+    public void publish(String channel , String jsonString){
+        Jedis responseJedis = getJedis();
+        responseJedis.publish(channel,jsonString);
+        responseJedis.close();
+    }
     /**
      * 订阅 requestsChannel
      */
-    public void subscribe(String requestChannel, String responseChannel, RpcCallback rpcCallback){
+    public void subscribe(String requestChannel , RpcCallback rpcCallback){
+        SimpleDateFormat sdf = new SimpleDateFormat("yy/MM/dd HH:mm:ss:SSS");
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Jedis jedis = RedisConfig.getSubscriber();
+                Jedis jedis = getJedis();
                 jedis.subscribe(new JedisPubSub() {
                     @Override
                     public void onMessage(String requestsChannel, String requestString) {
-                        synchronized (this){
-                            try {
-                                JSONObject requestJson = JSONObject.parseObject(requestString);
-                                String taskId = requestJson.getString("taskId");
-                                if ("ping".equals(taskId)) {
-                                    System.out.println(requestString);
-                                } else {
-//                                    System.err.println(String.format("<INFO> onMessage: %s requestString: %s", requestsChannel, requestString));
-                                    Jedis responseJedis = RedisConfig.getPublisher();
-                                    responseJedis.publish(responseChannel,rpcCallback.handle(requestJson).toString());
-                                    responseJedis.close();
-                                }
-                            } catch (Exception e) {
-                                requestString = String.format("<ERROR-50002> jedis value 非 json 格式 requestString:【%s】", requestString);
-                                System.err.println(requestString);
-                                JSONObject jo = new JSONObject();
-                                jo.put("status",false);
-                                jo.put("message",requestString);
-                                Jedis responseJedis = RedisConfig.getPublisher();
-                                responseJedis.publish(responseChannel,jo.toString());
-                                responseJedis.close();
-                            }
-                        }
+                        rpcCallback.handle(requestString);
                     }
                     @Override
                     public void onPMessage(String s, String s1, String s2) {
@@ -70,12 +60,10 @@ public class SubscribeService {
                 try {
                     while (true){
                         Thread.sleep(600000);//向requestsChannel发送心跳数据
-                        Jedis responseJedis = RedisConfig.getPublisher();
                         JSONObject jsonObject = new JSONObject();
-                        jsonObject.put("taskId","ping");
-                        jsonObject.put("ping",requestChannel);
-                        responseJedis.publish(requestChannel,jsonObject.toString());
-                        responseJedis.close();
+                        jsonObject.put("TaskId",requestChannel);
+                        jsonObject.put("nowTime",sdf.format(new Date()));
+                        publish(requestChannel,jsonObject.toString());
                     }
                 }catch (Exception e){
                     e.printStackTrace();
